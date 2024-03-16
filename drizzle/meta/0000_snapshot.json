@@ -1,28 +1,180 @@
 {
-  "id": "00000000-0000-0000-0000-000000000000",
-  "prevId": "",
+  "id": "88df4289-da33-4ae8-982a-50a80c6ef2e4",
+  "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "5",
   "dialect": "pg",
   "tables": {
-    "quiz": {
-      "name": "quiz",
+    "categorize": {
+      "name": "categorize",
       "schema": "",
       "columns": {
-        "quiz_id": {
-          "name": "quiz_id",
+        "cat_id": {
+          "name": "cat_id",
           "type": "serial",
           "primaryKey": true,
           "notNull": true
         },
-        "quiz_name": {
-          "name": "quiz_name",
-          "type": "varchar(100)",
+        "quiz_id": {
+          "name": "quiz_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "categories": {
+          "name": "categories",
+          "type": "text[]",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "items": {
+          "name": "items",
+          "type": "text[]",
           "primaryKey": false,
           "notNull": true
         }
       },
       "indexes": {},
-      "foreignKeys": {},
+      "foreignKeys": {
+        "categorize_quiz_id_quiz_quiz_id_fk": {
+          "name": "categorize_quiz_id_quiz_quiz_id_fk",
+          "tableFrom": "categorize",
+          "tableTo": "quiz",
+          "columnsFrom": [
+            "quiz_id"
+          ],
+          "columnsTo": [
+            "quiz_id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "draganddrop": {
+      "name": "draganddrop",
+      "schema": "",
+      "columns": {
+        "dd_id": {
+          "name": "dd_id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "quiz_id": {
+          "name": "quiz_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "items": {
+          "name": "items",
+          "type": "text[]",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "draganddrop_quiz_id_quiz_quiz_id_fk": {
+          "name": "draganddrop_quiz_id_quiz_quiz_id_fk",
+          "tableFrom": "draganddrop",
+          "tableTo": "quiz",
+          "columnsFrom": [
+            "quiz_id"
+          ],
+          "columnsTo": [
+            "quiz_id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "essay": {
+      "name": "essay",
+      "schema": "",
+      "columns": {
+        "essay_id": {
+          "name": "essay_id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "quiz_id": {
+          "name": "quiz_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "question": {
+          "name": "question",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "essay_quiz_id_quiz_quiz_id_fk": {
+          "name": "essay_quiz_id_quiz_quiz_id_fk",
+          "tableFrom": "essay",
+          "tableTo": "quiz",
+          "columnsFrom": [
+            "quiz_id"
+          ],
+          "columnsTo": [
+            "quiz_id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "matchmaking": {
+      "name": "matchmaking",
+      "schema": "",
+      "columns": {
+        "mm_id": {
+          "name": "mm_id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "quiz_id": {
+          "name": "quiz_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "items": {
+          "name": "items",
+          "type": "text[]",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "matchmaking_quiz_id_quiz_quiz_id_fk": {
+          "name": "matchmaking_quiz_id_quiz_quiz_id_fk",
+          "tableFrom": "matchmaking",
+          "tableTo": "quiz",
+          "columnsFrom": [
+            "quiz_id"
+          ],
+          "columnsTo": [
+            "quiz_id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
@@ -63,232 +215,10 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "multiplechoice_quiz_id_fkey": {
-          "name": "multiplechoice_quiz_id_fkey",
+        "multiplechoice_quiz_id_quiz_quiz_id_fk": {
+          "name": "multiplechoice_quiz_id_quiz_quiz_id_fk",
           "tableFrom": "multiplechoice",
           "tableTo": "quiz",
-          "schemaTo": "public",
-          "columnsFrom": [
-            "quiz_id"
-          ],
-          "columnsTo": [
-            "quiz_id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
-    },
-    "shortentry": {
-      "name": "shortentry",
-      "schema": "",
-      "columns": {
-        "se_id": {
-          "name": "se_id",
-          "type": "serial",
-          "primaryKey": true,
-          "notNull": true
-        },
-        "quiz_id": {
-          "name": "quiz_id",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "question": {
-          "name": "question",
-          "type": "varchar(255)",
-          "primaryKey": false,
-          "notNull": true
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {
-        "shortentry_quiz_id_fkey": {
-          "name": "shortentry_quiz_id_fkey",
-          "tableFrom": "shortentry",
-          "tableTo": "quiz",
-          "schemaTo": "public",
-          "columnsFrom": [
-            "quiz_id"
-          ],
-          "columnsTo": [
-            "quiz_id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
-    },
-    "rearrange": {
-      "name": "rearrange",
-      "schema": "",
-      "columns": {
-        "re_id": {
-          "name": "re_id",
-          "type": "serial",
-          "primaryKey": true,
-          "notNull": true
-        },
-        "quiz_id": {
-          "name": "quiz_id",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "question_order": {
-          "name": "question_order",
-          "type": "integer[]",
-          "primaryKey": false,
-          "notNull": true
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {
-        "rearrange_quiz_id_fkey": {
-          "name": "rearrange_quiz_id_fkey",
-          "tableFrom": "rearrange",
-          "tableTo": "quiz",
-          "schemaTo": "public",
-          "columnsFrom": [
-            "quiz_id"
-          ],
-          "columnsTo": [
-            "quiz_id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
-    },
-    "matchmaking": {
-      "name": "matchmaking",
-      "schema": "",
-      "columns": {
-        "mm_id": {
-          "name": "mm_id",
-          "type": "serial",
-          "primaryKey": true,
-          "notNull": true
-        },
-        "quiz_id": {
-          "name": "quiz_id",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "items": {
-          "name": "items",
-          "type": "text[]",
-          "primaryKey": false,
-          "notNull": true
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {
-        "matchmaking_quiz_id_fkey": {
-          "name": "matchmaking_quiz_id_fkey",
-          "tableFrom": "matchmaking",
-          "tableTo": "quiz",
-          "schemaTo": "public",
-          "columnsFrom": [
-            "quiz_id"
-          ],
-          "columnsTo": [
-            "quiz_id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
-    },
-    "draganddrop": {
-      "name": "draganddrop",
-      "schema": "",
-      "columns": {
-        "dd_id": {
-          "name": "dd_id",
-          "type": "serial",
-          "primaryKey": true,
-          "notNull": true
-        },
-        "quiz_id": {
-          "name": "quiz_id",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "items": {
-          "name": "items",
-          "type": "text[]",
-          "primaryKey": false,
-          "notNull": true
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {
-        "draganddrop_quiz_id_fkey": {
-          "name": "draganddrop_quiz_id_fkey",
-          "tableFrom": "draganddrop",
-          "tableTo": "quiz",
-          "schemaTo": "public",
-          "columnsFrom": [
-            "quiz_id"
-          ],
-          "columnsTo": [
-            "quiz_id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
-    },
-    "categorize": {
-      "name": "categorize",
-      "schema": "",
-      "columns": {
-        "cat_id": {
-          "name": "cat_id",
-          "type": "serial",
-          "primaryKey": true,
-          "notNull": true
-        },
-        "quiz_id": {
-          "name": "quiz_id",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "categories": {
-          "name": "categories",
-          "type": "text[]",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "items": {
-          "name": "items",
-          "type": "text[]",
-          "primaryKey": false,
-          "notNull": true
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {
-        "categorize_quiz_id_fkey": {
-          "name": "categorize_quiz_id_fkey",
-          "tableFrom": "categorize",
-          "tableTo": "quiz",
-          "schemaTo": "public",
           "columnsFrom": [
             "quiz_id"
           ],
@@ -333,11 +263,10 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "pictureanswers_quiz_id_fkey": {
-          "name": "pictureanswers_quiz_id_fkey",
+        "pictureanswers_quiz_id_quiz_quiz_id_fk": {
+          "name": "pictureanswers_quiz_id_quiz_quiz_id_fk",
           "tableFrom": "pictureanswers",
           "tableTo": "quiz",
-          "schemaTo": "public",
           "columnsFrom": [
             "quiz_id"
           ],
@@ -351,12 +280,96 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "essay": {
-      "name": "essay",
+    "quiz": {
+      "name": "quiz",
       "schema": "",
       "columns": {
-        "essay_id": {
-          "name": "essay_id",
+        "quiz_id": {
+          "name": "quiz_id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "quiz_name": {
+          "name": "quiz_name",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "quiz_id_users_id_fk": {
+          "name": "quiz_id_users_id_fk",
+          "tableFrom": "quiz",
+          "tableTo": "users",
+          "columnsFrom": [
+            "id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "rearrange": {
+      "name": "rearrange",
+      "schema": "",
+      "columns": {
+        "re_id": {
+          "name": "re_id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "quiz_id": {
+          "name": "quiz_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "question_order": {
+          "name": "question_order",
+          "type": "integer[]",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "rearrange_quiz_id_quiz_quiz_id_fk": {
+          "name": "rearrange_quiz_id_quiz_quiz_id_fk",
+          "tableFrom": "rearrange",
+          "tableTo": "quiz",
+          "columnsFrom": [
+            "quiz_id"
+          ],
+          "columnsTo": [
+            "quiz_id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "shortentry": {
+      "name": "shortentry",
+      "schema": "",
+      "columns": {
+        "se_id": {
+          "name": "se_id",
           "type": "serial",
           "primaryKey": true,
           "notNull": true
@@ -376,11 +389,10 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "essay_quiz_id_fkey": {
-          "name": "essay_quiz_id_fkey",
-          "tableFrom": "essay",
+        "shortentry_quiz_id_quiz_quiz_id_fk": {
+          "name": "shortentry_quiz_id_quiz_quiz_id_fk",
+          "tableFrom": "shortentry",
           "tableTo": "quiz",
-          "schemaTo": "public",
           "columnsFrom": [
             "quiz_id"
           ],
@@ -404,12 +416,6 @@
           "primaryKey": true,
           "notNull": true
         },
-        "google_id": {
-          "name": "google_id",
-          "type": "varchar(255)",
-          "primaryKey": false,
-          "notNull": true
-        },
         "name": {
           "name": "name",
           "type": "varchar(255)",
@@ -422,31 +428,30 @@
           "primaryKey": false,
           "notNull": false
         },
+        "avatar": {
+          "name": "avatar",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
         "created_at": {
           "name": "created_at",
           "type": "timestamp",
           "primaryKey": false,
           "notNull": false,
-          "default": "CURRENT_TIMESTAMP"
+          "default": "now()"
         }
       },
       "indexes": {},
       "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
-        "users_google_id_key": {
-          "columns": [
-            "google_id"
-          ],
-          "nullsNotDistinct": false,
-          "name": "users_google_id_key"
-        },
         "users_email_key": {
+          "name": "users_email_key",
+          "nullsNotDistinct": false,
           "columns": [
             "email"
-          ],
-          "nullsNotDistinct": false,
-          "name": "users_email_key"
+          ]
         }
       }
     }
@@ -454,8 +459,8 @@
   "enums": {},
   "schemas": {},
   "_meta": {
+    "columns": {},
     "schemas": {},
-    "tables": {},
-    "columns": {}
+    "tables": {}
   }
 }

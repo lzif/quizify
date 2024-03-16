@@ -1,10 +1,10 @@
 // app/routes/auth/google/callback.tsx
-import { LoaderArgs } from '@remix-run/node'
+import { LoaderFunctionArgs } from '@remix-run/node'
 import { authenticator } from '~/services/auth.server'
 
-export let loader = ({ request }: LoaderArgs) => {
+export let loader = ({ request }: LoaderFunctionArgs) => {
   return authenticator.authenticate('google', request, {
-    successRedirect: '/dashboard',
+    successRedirect: '/profile',
     failureRedirect: '/login',
   })
 }
