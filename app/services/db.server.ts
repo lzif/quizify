@@ -1,6 +1,6 @@
 import { eq, sql } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/node-postgres";
-import pkg from 'pg';
+import pkg from "pg";
 const { Pool } = pkg;
 
 const pool = new Pool({
@@ -16,11 +16,14 @@ type User = { name: string; email: string; avatar?: string };
 export async function findOrCreateUser(data: User) {
   console.log(data);
 
-  const user = await db.select({
-    name: users.name,
-    email: users.email,
-    avatar: users.avatar,
-  }).from(users).where(eq(users.email, data.email));
+  const user = await db
+    .select({
+      name: users.name,
+      email: users.email,
+      avatar: users.avatar,
+    })
+    .from(users)
+    .where(eq(users.email, data.email));
   if (user[0]) {
     console.log("Ada", user);
     return user[0];
@@ -38,6 +41,17 @@ export async function findOrCreateUser(data: User) {
   }
 }
 
+export async function getUser(email: string) {
+  const user = await db
+    .select({
+      name: users.name,
+      email: users.email,
+      avatar: users.avatar,
+    })
+    .from(users)
+    .where(eq(users.email, email));
+  return user[0];
+}
 export async function getAllUser() {
   return await db.select().from(users);
 }
