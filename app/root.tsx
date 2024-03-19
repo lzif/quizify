@@ -1,3 +1,6 @@
+import '@unocss/reset/tailwind.css'
+import 'virtual:uno.css'
+
 import type { LinksFunction } from "@remix-run/node";
 import {
   Links,
@@ -6,12 +9,6 @@ import {
   Scripts,
   ScrollRestoration,
 } from "@remix-run/react";
-
-import styles from "./tailwind.css?url";
-
-export const links: LinksFunction = () => [
-  { rel: "stylesheet", href: styles },
-];
 
 export default function App() {
   return (

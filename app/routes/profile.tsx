@@ -16,6 +16,7 @@ export default function RouteComponent(){
   const { user }= useLoaderData<typeof loader>()
   return (
     <div>
+      <Link to="/new">Add new Quiz</Link>
       <h1>Welcome back {user.name}!!</h1>
       <img src={user.avatar!} alt={user.name!} />
 

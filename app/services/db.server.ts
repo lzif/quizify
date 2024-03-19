@@ -11,6 +11,7 @@ import * as schema from "~/schema.server";
 const db = drizzle(pool, { schema });
 
 const users = schema.users;
+const quiz = schema.quiz;
 type User = { name: string; email: string; avatar?: string };
 
 export async function findOrCreateUser(data: User) {
@@ -54,4 +55,8 @@ export async function getUser(email: string) {
 }
 export async function getAllUser() {
   return await db.select().from(users);
+}
+
+export async function createQuiz(data:typeof quiz.$inferInsert){
+  return await db.insert(quiz).values(data)
 }
