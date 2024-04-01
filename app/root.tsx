@@ -1,7 +1,6 @@
-import '@unocss/reset/tailwind.css'
-import 'virtual:uno.css'
+import "@unocss/reset/tailwind.css";
+import "virtual:uno.css";
 
-import type { LinksFunction } from "@remix-run/node";
 import {
   Links,
   Meta,
@@ -9,6 +8,8 @@ import {
   Scripts,
   ScrollRestoration,
 } from "@remix-run/react";
+
+import Navbar from "~/components/navbar";
 
 export default function App() {
   return (
@@ -20,6 +21,7 @@ export default function App() {
         <Links />
       </head>
       <body className="bg-slate-900 text-slate-100">
+        <Navbar />
         <Outlet />
         <ScrollRestoration />
         <Scripts />

@@ -4,8 +4,6 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   return null;
 };
 
-export default function RouteComponent(){
-  return (
-    <div />
-  );
+export default function RouteComponent() {
+  return <div />;
 }

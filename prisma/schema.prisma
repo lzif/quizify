@@ -7,45 +7,101 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model essay {
-  essay_id Int    @id @default(autoincrement())
-  quiz_id  Int?
-  question String @db.VarChar(255)
-  quiz     quiz?  @relation(fields: [quiz_id], references: [quiz_id])
+model Quiz {
+  xata_id        String     @unique(map: "_pgroll_new_quizzes_xata_id_key") @default(dbgenerated("('rec_'::text || (xata_private.xid())::text)"))
+  xata_version   Int        @default(0)
+  xata_createdat DateTime   @default(now()) @db.Timestamptz(6)
+  xata_updatedat DateTime   @default(now()) @db.Timestamptz(6)
+  author         String
+  description    String?
+  name           String
+  questions      Question[]
+  users          User       @relation(fields: [author], references: [xata_id], onDelete: Cascade, onUpdate: NoAction, map: "author_link")
 }
 
-model multiplechoice {
-  mc_id          Int      @id @default(autoincrement())
-  quiz_id        Int?
-  question       String   @db.VarChar(255)
-  choices        String[]
-  correct_choice Int
-  quiz           quiz?    @relation(fields: [quiz_id], references: [quiz_id])
+model User {
+  xata_id        String   @unique(map: "_pgroll_new_users_xata_id_key") @default(dbgenerated("('rec_'::text || (xata_private.xid())::text)"))
+  xata_version   Int      @default(0)
+  xata_createdat DateTime @default(now()) @db.Timestamptz(6)
+  xata_updatedat DateTime @default(now()) @db.Timestamptz(6)
+  username       String   @unique(map: "users__pgroll_new_username_key")
+  name           String
+  email          String   @unique(map: "users_email_unique")
+  avatar         String?
+  bio            String?  @default("Hey they're, i'm using Quizify.")
+  quizzes        Quiz[]
 }
 
-model quiz {
-  quiz_id        Int              @id @default(autoincrement())
-  quiz_name      String           @db.VarChar(100)
-  id             Int?
-  description 	 String?
-  essay          essay[]
-  multiplechoice multiplechoice[]
-  users          users?           @relation(fields: [id], references: [id])
-  shortentry     shortentry[]
+model Question {
+  xata_id        String       @unique(map: "_pgroll_new_questions_xata_id_key") @default(dbgenerated("('rec_'::text || (xata_private.xid())::text)"))
+  xata_version   Int          @default(0)
+  xata_createdat DateTime     @default(now()) @db.Timestamptz(6)
+  xata_updatedat DateTime     @default(now()) @db.Timestamptz(6)
+  question_text  String
+  question_type  QuestionType
+  quiz           String?
+  answers        Answer[]
+  matches        Match[]
+  options        Option[]
+  quizzes        Quiz?        @relation(fields: [quiz], references: [xata_id], onDelete: Cascade, onUpdate: NoAction, map: "quiz_link")
+  rearrange      Rearrange[]
 }
 
-model shortentry {
-  se_id    Int    @id @default(autoincrement())
-  quiz_id  Int?
-  question String @db.VarChar(255)
-  quiz     quiz?  @relation(fields: [quiz_id], references: [quiz_id])
+model Match {
+  xata_createdat DateTime  @default(now()) @db.Timestamptz(6)
+  xata_updatedat DateTime  @default(now()) @db.Timestamptz(6)
+  xata_id        String    @unique(map: "_pgroll_new_matches_xata_id_key") @default(dbgenerated("('rec_'::text || (xata_private.xid())::text)"))
+  xata_version   Int       @default(0)
+  left_item      String
+  right_item     String
+  question       String?
+  questions      Question? @relation(fields: [question], references: [xata_id], onDelete: Cascade, onUpdate: NoAction, map: "question_link")
 }
 
-model users {
-  id         Int       @id @default(autoincrement())
-  name       String?   @db.VarChar(255)
-  email      String?   @unique @db.VarChar(255)
-  avatar     String?   @db.VarChar(255)
-  created_at DateTime? @default(now()) @db.Timestamp(6)
-  quiz       quiz[]
+model Answer {
+  xata_createdat DateTime  @default(now()) @db.Timestamptz(6)
+  xata_updatedat DateTime  @default(now()) @db.Timestamptz(6)
+  xata_id        String    @unique(map: "_pgroll_new_answers_xata_id_key") @default(dbgenerated("('rec_'::text || (xata_private.xid())::text)"))
+  xata_version   Int       @default(0)
+  answer_text    String
+  question       String?
+  questions      Question? @relation(fields: [question], references: [xata_id], onDelete: Cascade, onUpdate: NoAction, map: "question_link")
+}
+
+model Rearrange {
+  xata_createdat DateTime  @default(now()) @db.Timestamptz(6)
+  xata_updatedat DateTime  @default(now()) @db.Timestamptz(6)
+  xata_id        String    @unique(map: "_pgroll_new_rearrange_xata_id_key") @default(dbgenerated("('rec_'::text || (xata_private.xid())::text)"))
+  xata_version   Int       @default(0)
+  item_text      String
+  item_index     Int
+  question       String?
+  questions      Question? @relation(fields: [question], references: [xata_id], onDelete: Cascade, onUpdate: NoAction, map: "question_link")
+}
+
+model Option {
+  xata_id        String    @unique(map: "_pgroll_new_options_xata_id_key") @default(dbgenerated("('rec_'::text || (xata_private.xid())::text)"))
+  xata_version   Int       @default(0)
+  xata_createdat DateTime  @default(now()) @db.Timestamptz(6)
+  xata_updatedat DateTime  @default(now()) @db.Timestamptz(6)
+  option_text    String
+  is_correct     Boolean
+  question       String?
+  questions      Question? @relation(fields: [question], references: [xata_id], onDelete: Cascade, onUpdate: NoAction, map: "question_link")
+}
+
+model UserAnswer {
+  xata_createdat DateTime @default(now()) @db.Timestamptz(6)
+  xata_updatedat DateTime @default(now()) @db.Timestamptz(6)
+  xata_id        String   @unique(map: "_pgroll_new_useranswer_xata_id_key") @default(dbgenerated("('rec_'::text || (xata_private.xid())::text)"))
+  xata_version   Int      @default(0)
+  answer         Json
+  is_correct     Boolean
+}
+
+enum QuestionType {
+  MultipleChoice
+  ShortEntry
+  Rearrange
+  Matching
 }

@@ -2,17 +2,16 @@
 import { Authenticator } from "remix-auth";
 import { sessionStorage } from "~/services/session.server";
 import { GoogleStrategy } from "remix-auth-google";
-import { findOrCreateUser, getUser } from "./db.server";
+import { findOrCreateUser } from "./db.server";
 import { TOTPStrategy } from "remix-auth-totp";
 import { sendAuthEmail } from "./email.server";
+import { Prisma } from "@prisma/client";
 // Create an instance of the authenticator, pass a generic with what
 // strategies will return and will store in the session
-type User = {
-  name: string | null;
-  email: string | null;
-  avatar: string | null;
-};
-export let authenticator = new Authenticator<User>(sessionStorage);
+
+export let authenticator = new Authenticator<Prisma.UserCreateInput>(
+  sessionStorage
+);
 
 authenticator.use(
   new GoogleStrategy(
@@ -21,8 +20,9 @@ authenticator.use(
       clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
       callbackURL: "http://localhost:3000/auth/google/callback",
     },
-    async ({ accessToken, refreshToken, extraParams, profile }) => {
-      const user = {
+    async ({ profile }) => {
+      const user: Prisma.UserCreateInput = {
+        username: profile._json.name.replace(" ", ""),
         name: profile._json.name,
         email: profile._json.email,
         avatar: profile._json.picture,
@@ -35,15 +35,18 @@ authenticator.use(
 authenticator.use(
   new TOTPStrategy(
     {
-      secret: process.env.SECRET!||"Memek",
+      secret: process.env.SECRET! || "Rahasia",
 
       sendTOTP: async ({ email, code, magicLink }) => {
-        // Send the TOTP code to the user.
         await sendAuthEmail({ email, code, magicLink });
       },
     },
     async ({ email }) => {
-      let user = await findOrCreateUser({ email, name: email.split("@")[0] });
+      let user = await findOrCreateUser({
+        email,
+        name: email.split("@")[0],
+        username: email.split("@")[0],
+      });
 
       return user;
     }

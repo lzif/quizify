@@ -12,9 +12,7 @@ export default function Index() {
   return (
     <div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.8" }}>
       <nav>
-        <Link to="/login">
-          Login
-        </Link>
+        <Link to="/login">Login</Link>
       </nav>
     </div>
   );
