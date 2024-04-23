@@ -1,4 +1,3 @@
-import UnoCSS from "unocss/vite";
 import { vitePlugin as remix } from "@remix-run/dev";
 import { installGlobals } from "@remix-run/node";
 import { defineConfig } from "vite";
@@ -10,5 +9,5 @@ export default defineConfig({
   server: {
     port: 3000,
   },
-  plugins: [UnoCSS(), remix(), tsconfigPaths()],
+  plugins: [remix(), tsconfigPaths()],
 });

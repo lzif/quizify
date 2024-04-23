@@ -1,5 +1,6 @@
 import type { ActionFunctionArgs, LoaderFunctionArgs } from "@remix-run/node";
 import { Form, json, useLoaderData } from "@remix-run/react";
+import { Card } from "~/components/ui/card";
 import { authenticator } from "~/services/auth.server";
 import { commitSession, getSession } from "~/services/session.server";
 
@@ -30,24 +31,37 @@ export async function action({ request }: ActionFunctionArgs) {
 export default function Login() {
   let { authError } = useLoaderData<typeof loader>();
   return (
-    <div>
+    <div className="container flex flex-col gap-4 items-center justify-center h-screen w-screen">
       {/* Google Login */}
-      <Form action="/auth/google" method="post">
-        <button>Login with Google</button>
-      </Form>
+      <Card>
+        <Form
+          action="/auth/google"
+          method="post"
+          className="flex flex-col gap-4"
+        >
+          <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+            Login with Google
+          </button>
+        </Form>
 
-      {/* Email Login */}
-      <Form method="POST">
-        <label htmlFor="email">Email</label>
-        <input
-          type="email"
-          name="email"
-          placeholder="Insert email .."
-          required
-        />
-        <button type="submit">Send Code</button>
-      </Form>
-
+        {/* Email Login */}
+        <Form method="POST" className="flex flex-col gap-4">
+          <label htmlFor="email">Email</label>
+          <input
+            type="email"
+            name="email"
+            placeholder="Insert email .."
+            required
+            className="border border-gray-300 rounded-md p-2"
+          />
+          <button
+            type="submit"
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          >
+            Send Code
+          </button>
+        </Form>
+      </Card>
       {/* Login Errors Handling. */}
       <span>{authError?.message}</span>
     </div>
